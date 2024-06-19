@@ -6,13 +6,14 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const Admin = require('./models/AdminRegister');
 const User = require('./models/User');
+const cors = require('cors');
 const upload = require('./upload-file/file-upload');
 const { default: mongoose } = require('mongoose');
 const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-
+app.use(cors());
 app.use(bodyParser.json());
 
 const jwtSecret = 'mynameisdeepakgoswamimynameisdeepakgoswamimynameisdeepak';
