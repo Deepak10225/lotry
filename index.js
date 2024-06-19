@@ -33,11 +33,12 @@ app.get('/', (req, res) => {
     return res.json('hello');
 })
 async function verifyToken(req, res, next) {
-    const token = req.headers['authorization'];
-    console.log(token);
-    console.log('Received token:', token); // Add this line for debugging
-    const decodedToken = jwt.decode(token);
-console.log('Decoded token:', decodedToken);
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) {
+        return res.status(403).json({ message: ' token not available' });
+        
+    }
+    const token = authHeader.split(' ')[1];
     jwt.verify(token, jwtSecret, { algorithms: ['HS256'] }, (err, decoded) => {
         if (err) {
             console.error('Token verification error:', err.message);
@@ -68,7 +69,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.post('/api/add-user', upload.single('profile'), async (req, res) => {
+app.post('/api/add-user',verifyToken, upload.single('profile'), async (req, res) => {
     try {
         const { name, number, profile } = req.body;
         let profileImagePath = req.file.filename;
@@ -79,7 +80,7 @@ app.post('/api/add-user', upload.single('profile'), async (req, res) => {
         res.status(400).send({ message: 'Error adding user', error });
     }
 });
-app.get('/api/get-user',async (req, res) => {
+app.get('/api/get-user',verifyToken,async (req, res) => {
     try {
         const baseUrl = `${req.protocol}://${req.get('host')}`;
         const users = await User.find();
