@@ -64,7 +64,7 @@ app.post('/api/add-user',verifyToken, upload.single('profile'), async (req, res)
         let profileImagePath = req.file.filename;
         const user = new User({ name, number, profile, profileImagePath });
         await user.save();
-        res.status(201).send({ message: 'User added successfully', user });
+        res.status(201).send({ message: 'User added successfully'});
     } catch (error) {
         res.status(400).send({ message: 'Error adding user', error });
     }
@@ -86,8 +86,18 @@ app.get('/api/get-user',verifyToken,async (req, res) => {
 app.get('/api/dashboards',verifyToken,async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
-        res.status(200).send({ users: totalUsers });
-        
+        const new_user = 0;
+        const jackpot_counts = 0;
+        const kyc_approvals = 0; // You should replace this with actual logic to fetch KYC approvals
+        const payment = 0;
+
+        res.status(200).send({ 
+            users: totalUsers,
+            new_user:new_user,
+            jackpot_counts:jackpot_counts,
+            kyc_approvals:kyc_approvals,
+            payment:payment
+        });
     } catch (error) {
         res.status(500).send({ message: 'Error fetching users', error });
     }
