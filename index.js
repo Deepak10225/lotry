@@ -19,17 +19,6 @@ const jwtSecret = 'mynameisdeepakgoswamimynameisdeepakgoswamimynameisdeepak';
 
 
 app.get('/', (req, res) => {
-    // const admin = new Admin({ name: 'Admin', email: 'admin@gmail.com', password: 'Admin@123' });
-    // bcrypt.hash(admin.password, 10, (err, hashedPassword) => {
-    //     if (err) {
-    //         console.error('Error hashing password', err);
-    //     } else {
-    //         admin.password = hashedPassword;
-    //         admin.save()
-    //             .then(() => console.log('admin saved'))
-    //             .catch(err => console.error('Error saving admin', err));
-    //     }
-    // });
     return res.json('hello');
 })
 async function verifyToken(req, res, next) {
@@ -96,7 +85,9 @@ app.get('/api/get-user',verifyToken,async (req, res) => {
 });
 app.get('/api/dashboards',verifyToken,async (req, res) => {
     try {
-        $users = User.find()
+        const totalUsers = await User.countDocuments();
+        res.status(200).send({ users: totalUsers });
+        
     } catch (error) {
         res.status(500).send({ message: 'Error fetching users', error });
     }
