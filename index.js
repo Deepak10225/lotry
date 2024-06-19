@@ -64,7 +64,7 @@ app.post('/api/add-user',verifyToken, upload.single('profile'), async (req, res)
         let profileImagePath = req.file.filename;
         const user = new User({ name, number, profile, profileImagePath });
         await user.save();
-        res.status(201).send({ message: 'User added successfully', user });
+        res.status(201).send({ message: 'User added successfully'});
     } catch (error) {
         res.status(400).send({ message: 'Error adding user', error });
     }
