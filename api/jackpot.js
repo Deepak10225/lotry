@@ -35,7 +35,8 @@ const jackpot = [
                 join_count,
                 prize,
                 wining_amount,
-                status
+                status,
+                profileImagePath
             });
 
             await jackpot.save();
