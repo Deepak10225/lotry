@@ -273,12 +273,15 @@ const getBanner = [Middleware.verifyToken, async (req, res) => {
     try {
         const baseUrl = `${req.protocol}://${req.get('host')}`;
         const banner = await Banner.find();
-        const modifiedUsers = banner.map(user => ({
-            ...user.toJSON(),
-            banner_image: `${baseUrl}/uploads/images/${user.profileImagePath}`
-        }));
-
-        res.status(200).send({ banners: modifiedUsers });
+        const modifiedBanners = banner.map(banner => {
+            const { _id, profileImagePath, ...rest } = banner.toJSON();
+            return {
+                id: _id,
+                banner_image: `${baseUrl}/uploads/images/${profileImagePath}`,
+                
+            };
+        });
+        res.status(200).send({ banners: modifiedBanners });
     } catch (error) {
         res.status(500).send({ message: 'Error fetching jackpots', error });
     }
