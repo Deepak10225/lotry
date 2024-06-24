@@ -277,7 +277,7 @@ const getBanner = [Middleware.verifyToken, async (req, res) => {
             const { _id, profileImagePath, ...rest } = banner.toJSON();
             return {
                 id: _id,
-                banner_image: `${baseUrl}/uploads/images/${profileImagePath}`,
+                banner_image: `${baseUrl}/uploads/images/${banner.profileImagePath}`,
                 
             };
         });
