@@ -12,7 +12,7 @@ const loginApi = require('./loginApi');
 const {getUser,addUser} = require('./userApi');
 const dashboard = require('./dashboard');
 const {jackpot,getJackpots} = require('./jackpot');
-const {banner,deleteBanner,helpAndSupport,updateHelpAndSupport,aboutUs,updateAboutUs,refundPolicy,updateRefundPolicy, termsAndCondetion, updatetermsAndCondetion} = require('./setting');
+const {banner,deleteBanner,helpAndSupport,updateHelpAndSupport,aboutUs,updateAboutUs,refundPolicy,updateRefundPolicy, termsAndCondetion, updatetermsAndCondetion,getBanner} = require('./setting');
 
 // Login Api
 app.post('/api/login',loginApi);
@@ -31,6 +31,7 @@ app.get('/api/jackpots',getJackpots);
 // Setting
 app.post('/api/add-banner',banner);
 app.get('/api/delete-banner',deleteBanner);
+app.get('/api/get-banner',getBanner);
 app.post('/api/help-and-support',helpAndSupport);
 app.post('/api/update-help-and-support',updateHelpAndSupport);
 app.post('/api/about-us',aboutUs);

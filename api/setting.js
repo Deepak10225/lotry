@@ -269,6 +269,22 @@ const updatetermsAndCondetion = [
     }
 ];
 
+const getBanner = [Middleware.verifyToken, async (req, res) => {
+    try {
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        const banner = await Banner.find();
+        const modifiedUsers = banner.map(user => ({
+            ...user.toJSON(),
+            banner_image: `${baseUrl}/uploads/images/${user.profileImagePath}`
+        }));
+
+        res.status(200).send({ banners: modifiedUsers });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching jackpots', error });
+    }
+}
+];
+
 module.exports =
 {
     banner,
@@ -280,5 +296,6 @@ module.exports =
     refundPolicy,
     updateRefundPolicy,
     termsAndCondetion,
-    updatetermsAndCondetion
+    updatetermsAndCondetion,
+    getBanner
 };
