@@ -347,6 +347,70 @@ const getBanner = [Middleware.verifyToken, async (req, res) => {
     }
 }
 ];
+const helpAndSuport = [Middleware.verifyToken, async (req, res) => {
+    try {
+        const help_and_support = await HelpAndSupport.find();
+        const modifiedBanners = help_and_support.map(has => {
+            const { _id, text, ...rest } = has.toJSON();
+            return {
+                id: _id,
+                text,
+            };
+        });
+        res.status(200).send({ help_and_support: modifiedBanners });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching help and support', error });
+    }
+}
+];
+const getAboutUs = [Middleware.verifyToken, async (req, res) => {
+    try {
+        const about_us = await AboutUs.find();
+        const modifiedBanners = about_us.map(has => {
+            const { _id, text, ...rest } = has.toJSON();
+            return {
+                id: _id,
+                text,
+            };
+        });
+        res.status(200).send({ about_us: modifiedBanners });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching about us', error });
+    }
+}
+];
+const getRefundPolicy = [Middleware.verifyToken, async (req, res) => {
+    try {
+        const refund_policy = await RefundPolicy.find();
+        const modifiedBanners = refund_policy.map(has => {
+            const { _id, text, ...rest } = has.toJSON();
+            return {
+                id: _id,
+                text,
+            };
+        });
+        res.status(200).send({ refund_policy: modifiedBanners });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching about us', error });
+    }
+}
+];
+const getTermsAndCondetion = [Middleware.verifyToken, async (req, res) => {
+    try {
+        const terms_and_conditions = await TermsAndCondetion.find();
+        const modifiedBanners = terms_and_conditions.map(has => {
+            const { _id, text, ...rest } = has.toJSON();
+            return {
+                id: _id,
+                text,
+            };
+        });
+        res.status(200).send({ terms_and_conditions: modifiedBanners });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching about us', error });
+    }
+}
+];
 
 module.exports =
 {
@@ -360,5 +424,9 @@ module.exports =
     updateRefundPolicy,
     termsAndCondetion,
     updatetermsAndCondetion,
-    getBanner
+    getBanner,
+    helpAndSuport,
+    getAboutUs,
+    getRefundPolicy,
+    getTermsAndCondetion
 };
