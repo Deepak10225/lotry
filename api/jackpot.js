@@ -23,6 +23,9 @@ const jackpot = [
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
+            if (!req.file) {
+                return res.status(400).json({ errors: [{ msg: 'Image file is required' }] });
+            }
             const { name, description, starting_date, prize_pool, join_count, prize, wining_amount, status } = req.body;
             let profileImagePath = req.file.filename;
 
