@@ -14,7 +14,7 @@ const banner = [
     async (req, res) => {
         try {
             if (!req.file) {
-                return res.status(400).json({ errors: [{ msg: 'Image file is required' }] });
+                return res.status(400).json({ errors: { image: 'Image file is required' } });
             }
             const { image } = req.body;
             let profileImagePath = req.file.filename;
@@ -41,9 +41,15 @@ const deleteBanner = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
-
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const { id } = req.query;
             const banner = await Banner.findByIdAndDelete(id);
 
@@ -68,8 +74,15 @@ const helpAndSupport = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {text} = req.body;
             const helpAndSupport = new HelpAndSupport({text});
             await helpAndSupport.save();
@@ -95,8 +108,15 @@ const updateHelpAndSupport = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {id,text} = req.body;
             const helpAndSupport = await HelpAndSupport.findByIdAndUpdate(id, { text },{ new: true, runValidators: true } // Options to return the updated document and run validators
             );
@@ -120,8 +140,15 @@ const aboutUs = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {text} = req.body;
             const aboutUs = new AboutUs({text});
             await aboutUs.save();
@@ -147,8 +174,15 @@ const updateAboutUs = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {id,text} = req.body;
             const aboutUs = await AboutUs.findByIdAndUpdate(id, { text },{ new: true, runValidators: true } // Options to return the updated document and run validators
             );
@@ -173,8 +207,15 @@ const refundPolicy = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {text} = req.body;
             const refundPolicy = new RefundPolicy({text});
             await refundPolicy.save();
@@ -200,8 +241,15 @@ const updateRefundPolicy = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {id,text} = req.body;
             const refundPolicy = await RefundPolicy.findByIdAndUpdate(id, { text },{ new: true, runValidators: true } // Options to return the updated document and run validators
             );
@@ -220,26 +268,31 @@ const termsAndCondetion = [
     upload.none(),
     Middleware.verifyToken,
     [
-        check('text').not().isEmpty().withMessage('text field is required'),
+      check('text').not().isEmpty().withMessage('text field is required'),
     ],
     async (req, res) => {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
-            const {text} = req.body;
-            const termsAndCondetion = new TermsAndCondetion({text});
-            await termsAndCondetion.save();
-            if (!text) {
-                return res.status(404).send({ message: 'text not found' });
-            }
-            res.status(200).send({ message: 'Terms And Condetion add successfully' });
-        } catch (error) {
-            res.status(500).send({ message: 'Error adding Terms And Condetion', error });
-        }
+      try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            // Custom error response
+            const formattedErrors = errors.array().reduce((acc, err) => {
+              acc[err.path] = err.msg;
+              return acc;
+            }, {});
+            return res.status(400).json({
+              errors: formattedErrors,
+            });
+          }
+  
+        const { text } = req.body;
+        const termsAndCondetion = new TermsAndCondetion({ text });
+        await termsAndCondetion.save();
+        res.status(200).send({ message: 'Terms and Conditions added successfully' });
+      } catch (error) {
+        res.status(500).send({ message: 'Error adding Terms and Conditions', error });
+      }
     }
-];
+  ];
 
 const updatetermsAndCondetion = [
     upload.none(),
@@ -253,8 +306,15 @@ const updatetermsAndCondetion = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+                // Custom error response
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                  acc[err.path] = err.msg;
+                  return acc;
+                }, {});
+                return res.status(400).json({
+                  errors: formattedErrors,
+                });
+              }
             const {id,text} = req.body;
             const termsAndCondetion = await TermsAndCondetion.findByIdAndUpdate(id, { text },{ new: true, runValidators: true } // Options to return the updated document and run validators
             );
