@@ -1,7 +1,7 @@
 // loginApi.js
 const bcrypt = require('bcrypt');
-const Admin = require('../models/AdminRegister'); // Adjust the path to your Admin model
-const Middleware = require('../middleware/jwt'); // Adjust the path to your Middleware
+const Admin = require('../../models/AdminRegister'); // Adjust the path to your Admin model
+const Middleware = require('../../middleware/jwt'); // Adjust the path to your Middleware
 
 const loginApi = async (req, res) => {
     const { email, password } = req.body;
@@ -15,7 +15,7 @@ const loginApi = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
-        const token = Middleware.jwt.sign({ _id: '667161d710c0b48d1c5474a4' }, Middleware.jwtSecret, { expiresIn: '1h' });
+        const token = Middleware.jwt.sign({ _id: '667161d710c0b48d1c5474a4' }, Middleware.jwtSecret);
 
         res.json({ token });
     } catch (err) {
