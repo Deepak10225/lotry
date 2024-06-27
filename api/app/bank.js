@@ -10,7 +10,7 @@ const addBank = [Middleware.verifyToken,upload.none(),addBankValidation,async(re
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+            return res.status(422).json({ errors: formattedErrors });
         }
         const {account_no,ifsc_code,bank_name ,bank_branch } = req.body;
         const bank = new Bank({account_no,ifsc_code,bank_name ,bank_branch});

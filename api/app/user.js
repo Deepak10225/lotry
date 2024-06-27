@@ -12,7 +12,7 @@ const checkNumber = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+            return res.status(422).json({ errors: formattedErrors });
         }
 
         const { number } = req.body;
@@ -20,7 +20,7 @@ const checkNumber = [
         try {
             const user = await User.findOne({ number });
             if (!user) {
-                return res.status(400).json({ status: 'false', otp });
+                return res.status(200).json({ status: 'false', otp });
             } else {
                 const token = Middleware.jwt.sign({ _id: user._id }, Middleware.jwtSecret, { expiresIn: '1h' });
                 return res.json({ token });
@@ -38,14 +38,14 @@ const verifyOTP = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+            return res.status(422).json({ errors: formattedErrors });
         }
         const { number, otp } = req.body;
         try {
             const user = await User.findOne({ number });
             if (!user) {
                 if (otp == '1234') {
-                    return res.status(400).json({ "message": "Verification successfully" });
+                    return res.status(200).json({ "message": "Verification successfully" });
                 } else {
                     return res.status(400).json({ "otp": "Incorrect Verification Code" });
                 }
@@ -63,10 +63,10 @@ const signup = [
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 const formattedErrors = formatValidationErrors(errors);
-                return res.status(400).json({ errors: formattedErrors });
+                return res.status(422).json({ errors: formattedErrors });
             }
             if (!req.file) {
-                return res.status(400).json({ errors: [{ profile: 'profile file is required' }] });
+                return res.status(422).json({ errors: [{ profile: 'profile file is required' }] });
             }
             const { name, number, aadhar_number, pan_number, dob } = req.body;
             const profileImagePath = req.file.filename;

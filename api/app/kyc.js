@@ -11,7 +11,7 @@ const kycVerification = [upload.none(), Middleware.verifyToken, updateKycValidat
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+            return res.status(422).json({ errors: formattedErrors });
         }
         const {name,aadhar_no,pan_no,dob} = req.body;
         const user_id = req.user;
@@ -32,11 +32,11 @@ const uploadKyc = [upload.fields([{ name: 'pan_img', maxCount: 1 },{ name: 'aadh
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 const formattedErrors = formatValidationErrors(errors);
-                return res.status(400).json({ errors: formattedErrors });
+                return res.status(422).json({ errors: formattedErrors });
             }
 
             if (!req.files || !req.files.pan_img || !req.files.aadhar_img) {
-                return res.status(400).json({ message: 'PAN and Aadhar images are required' });
+                return res.status(422).json({ message: 'PAN and Aadhar images are required' });
             }
 
             const pan_img = req.files.pan_img[0].filename;

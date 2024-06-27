@@ -30,7 +30,7 @@ const updateProfile = [Middleware.verifyToken,upload.single('profile'),updatePro
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 const formattedErrors = formatValidationErrors(errors);
-                return res.status(400).json({ errors: formattedErrors });
+                return res.status(422).json({ errors: formattedErrors });
             }
             const userId = req.user;
             const { name } = req.body;
