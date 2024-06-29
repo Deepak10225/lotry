@@ -296,67 +296,60 @@ const getBanner = [Middleware.verifyToken, async (req, res) => {
     }
 }
 ];
-const helpAndSuport = [Middleware.verifyToken, async (req, res) => {
-    try {
-        const help_and_support = await HelpAndSupport.find();
-        const modifiedBanners = help_and_support.map(has => {
-            const { _id, text, ...rest } = has.toJSON();
-            return {
-                id: _id,
-                text,
+const helpAndSuport = [
+    Middleware.verifyToken,
+    async (req, res) => {
+        try {
+            const help_and_support = await HelpAndSupport.findOne();
+            const modifiedHelpAndSupport = {
+                id: help_and_support._id,
+                text: help_and_support.text,
             };
-        });
-        res.status(200).send({ help_and_support: modifiedBanners });
+            res.status(200).send({ help_and_support: modifiedHelpAndSupport });
+        } catch (error) {
+            res.status(500).send({ message: 'Error fetching help and support', error });
+        }
+    }
+];
+
+const getAboutUs = [ Middleware.verifyToken,async (req, res) => {
+    try {
+        const aboutUs = await AboutUs.findOne();
+        const modifiedHelpAndSupport = {
+            id: aboutUs._id,
+            text: aboutUs.text,
+        };
+        res.status(200).send({ about_us: modifiedHelpAndSupport });
     } catch (error) {
         res.status(500).send({ message: 'Error fetching help and support', error });
     }
 }
+
 ];
-const getAboutUs = [Middleware.verifyToken, async (req, res) => {
+const getRefundPolicy = [ Middleware.verifyToken,async (req, res) => {
     try {
-        const about_us = await AboutUs.find();
-        const modifiedBanners = about_us.map(has => {
-            const { _id, text, ...rest } = has.toJSON();
-            return {
-                id: _id,
-                text,
-            };
-        });
-        res.status(200).send({ about_us: modifiedBanners });
+        const refundPolicy = await RefundPolicy.findOne();
+        const modifiedHelpAndSupport = {
+            id: refundPolicy._id,
+            text: refundPolicy.text,
+        };
+        res.status(200).send({ refund_policy: modifiedHelpAndSupport });
     } catch (error) {
-        res.status(500).send({ message: 'Error fetching about us', error });
+        res.status(500).send({ message: 'Error fetching help and support', error });
     }
 }
-];
-const getRefundPolicy = [Middleware.verifyToken, async (req, res) => {
-    try {
-        const refund_policy = await RefundPolicy.find();
-        const modifiedBanners = refund_policy.map(has => {
-            const { _id, text, ...rest } = has.toJSON();
-            return {
-                id: _id,
-                text,
-            };
-        });
-        res.status(200).send({ refund_policy: modifiedBanners });
-    } catch (error) {
-        res.status(500).send({ message: 'Error fetching about us', error });
-    }
-}
+
 ];
 const getTermsAndCondetion = [Middleware.verifyToken, async (req, res) => {
     try {
-        const terms_and_conditions = await TermsAndCondetion.find();
-        const modifiedBanners = terms_and_conditions.map(has => {
-            const { _id, text, ...rest } = has.toJSON();
-            return {
-                id: _id,
-                text,
-            };
-        });
-        res.status(200).send({ terms_and_conditions: modifiedBanners });
+        const termsAndCondition = await TermsAndCondetion.findOne();
+        const modifiedHelpAndSupport = {
+            id: termsAndCondition._id,
+            text: termsAndCondition.text,
+        };
+        res.status(200).send({ terms_and_conditions: modifiedHelpAndSupport });
     } catch (error) {
-        res.status(500).send({ message: 'Error fetching about us', error });
+        res.status(500).send({ message: 'Error fetching help and support', error });
     }
 }
 ];

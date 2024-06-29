@@ -20,7 +20,7 @@ const checkNumber = [
         try {
             const user = await User.findOne({ number });
             if (!user) {
-                return res.status(200).json({ status: 'false', otp });
+                return res.status(200).json({ status: 'false', otp,number });
             } else {
                 const token = Middleware.jwt.sign({ _id: user._id }, Middleware.jwtSecret, { expiresIn: '1h' });
                 return res.json({ token });
@@ -32,9 +32,7 @@ const checkNumber = [
     }
 ];
 
-const verifyOTP = [
-    upload.none(),verifyOtp,
-    async (req, res) => {
+const verifyOTP = [upload.none(),verifyOtp,async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const formattedErrors = formatValidationErrors(errors);
@@ -43,12 +41,15 @@ const verifyOTP = [
         const { number, otp } = req.body;
         try {
             const user = await User.findOne({ number });
-            if (!user) {
+            if (user) {
                 if (otp == '1234') {
-                    return res.status(200).json({ "message": "Verification successfully" });
+                    return res.status(200).json({ "message": "Verification successfully",number });
                 } else {
-                    return res.status(400).json({ "otp": "Incorrect Verification Code" });
+                    return res.status(422).json({ "otp": "Incorrect Verification Code" });
                 }
+            }else{
+                return res.status(200).json({ "message": "number is not registerd"});
+
             }
         } catch (err) {
             console.error('Error during login', err);
