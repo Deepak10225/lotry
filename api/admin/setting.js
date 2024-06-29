@@ -19,7 +19,7 @@ const banner = [upload.single('image'), Middleware.verifyToken, async (req, res)
         let profileImagePath = req.file.filename;
         const banner = new Banner({ image, profileImagePath });
         await banner.save();
-        res.status(201).send({ message: 'Banner added successfully' });
+        res.status(200).send({ message: 'Banner added successfully' });
     } catch (error) {
         res.status(400).send({ message: 'Error adding banner', error });
     }
@@ -48,27 +48,35 @@ async (req, res) => {
     }
 }
 ];
-
-const helpAndSupport = [upload.none(), Middleware.verifyToken,settingValidation,
-async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+const helpAndSupport = [upload.none(),Middleware.verifyToken,settingValidation,async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const formattedErrors = formatValidationErrors(errors);
+                return res.status(400).json({ errors: formattedErrors });
+            } 
+            const { text } = req.body; 
+            if (!text) {
+                return res.status(400).send({ message: 'text not found' });
+            }
+            
+            let helpAndSupport = await HelpAndSupport.findOne();
+            
+            if (helpAndSupport) {
+                helpAndSupport.text = text;
+                await helpAndSupport.save();
+                res.status(200).send({ message: 'Help And Support updated successfully' });
+            } else {
+                helpAndSupport = new HelpAndSupport({ text });
+                await helpAndSupport.save();
+                res.status(200).send({ message: 'Help And Support added successfully' });
+            }
+        } catch (error) {
+            res.status(500).send({ message: 'Error adding/updating text', error });
         }
-        const { text } = req.body;
-        const helpAndSupport = new HelpAndSupport({ text });
-        await helpAndSupport.save();
-        if (!text) {
-            return res.status(404).send({ message: 'text not found' });
-        }
-        res.status(200).send({ message: 'Help And Support add successfully' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error adding text', error });
     }
-}
 ];
+
 
 const updateHelpAndSupport = [upload.none(), Middleware.verifyToken,updateSettingValidation,
 async (req, res) => {
@@ -91,26 +99,37 @@ async (req, res) => {
     }
 }
 ];
-const aboutUs = [upload.none(), Middleware.verifyToken,settingValidation,
-async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+const aboutUs = [upload.none(),Middleware.verifyToken,settingValidation,async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const formattedErrors = formatValidationErrors(errors);
+                return res.status(400).json({ errors: formattedErrors });
+            }
+            
+            const { text } = req.body;
+            
+            if (!text) {
+                return res.status(400).send({ message: 'Text not found' });
+            }
+            
+            let aboutUs = await AboutUs.findOne();
+            
+            if (aboutUs) {
+                aboutUs.text = text;
+                await aboutUs.save();
+                res.status(200).send({ message: 'About Us updated successfully' });
+            } else {
+                aboutUs = new AboutUs({ text });
+                await aboutUs.save();
+                res.status(200).send({ message: 'About Us added successfully' });
+            }
+        } catch (error) {
+            res.status(500).send({ message: 'Error adding or updating About Us', error });
         }
-        const { text } = req.body;
-        const aboutUs = new AboutUs({ text });
-        await aboutUs.save();
-        if (!text) {
-            return res.status(404).send({ message: 'text not found' });
-        }
-        res.status(200).send({ message: 'About Us add successfully' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error adding about us', error });
     }
-}
 ];
+
 
 const updateAboutUs = [upload.none(), Middleware.verifyToken,updateSettingValidation,
 async (req, res) => {
@@ -134,26 +153,43 @@ async (req, res) => {
 }
 ];
 
-const refundPolicy = [upload.none(), Middleware.verifyToken,settingValidation,
-async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const formattedErrors = formatValidationErrors(errors);
-            return res.status(400).json({ errors: formattedErrors });
+const refundPolicy = [
+    upload.none(),
+    Middleware.verifyToken,
+    settingValidation,
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const formattedErrors = formatValidationErrors(errors);
+                return res.status(400).json({ errors: formattedErrors });
+            }
+            
+            const { text } = req.body;
+            
+            if (!text) {
+                return res.status(400).send({ message: 'Text not found' });
+            }
+            
+            let refundPolicy = await RefundPolicy.findOne();
+            
+            if (refundPolicy) {
+                // Update the existing text
+                refundPolicy.text = text;
+                await refundPolicy.save();
+                res.status(200).send({ message: 'Refund Policy updated successfully' });
+            } else {
+                // Create a new entry
+                refundPolicy = new RefundPolicy({ text });
+                await refundPolicy.save();
+                res.status(200).send({ message: 'Refund Policy added successfully' });
+            }
+        } catch (error) {
+            res.status(500).send({ message: 'Error adding or updating Refund Policy', error });
         }
-        const { text } = req.body;
-        const refundPolicy = new RefundPolicy({ text });
-        await refundPolicy.save();
-        if (!text) {
-            return res.status(404).send({ message: 'text not found' });
-        }
-        res.status(200).send({ message: 'Refund Policy add successfully' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error adding Refund Policy', error });
     }
-}
 ];
+
 
 const updateRefundPolicy = [upload.none(), Middleware.verifyToken,updateSettingValidation,
 async (req, res) => {
@@ -177,30 +213,44 @@ async (req, res) => {
 }
 ];
 
-const termsAndCondetion = [upload.none(), Middleware.verifyToken,settingValidation,
-async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            // Custom error response
-            const formattedErrors = errors.array().reduce((acc, err) => {
-                acc[err.path] = err.msg;
-                return acc;
-            }, {});
-            return res.status(400).json({
-                errors: formattedErrors,
-            });
-        }
+const termsAndCondetion = [upload.none(),Middleware.verifyToken,settingValidation,async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const formattedErrors = errors.array().reduce((acc, err) => {
+                    acc[err.path] = err.msg;
+                    return acc;
+                }, {});
+                return res.status(400).json({
+                    errors: formattedErrors,
+                });
+            }
 
-        const { text } = req.body;
-        const termsAndCondetion = new TermsAndCondetion({ text });
-        await termsAndCondetion.save();
-        res.status(200).send({ message: 'Terms and Conditions added successfully' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error adding Terms and Conditions', error });
+            const { text } = req.body;
+
+            if (!text) {
+                return res.status(400).send({ message: 'Text not found' });
+            }
+
+            let termsAndCondition = await TermsAndCondetion.findOne();
+            
+            if (termsAndCondition) {
+                // Update the existing text
+                termsAndCondition.text = text;
+                await termsAndCondition.save();
+                res.status(200).send({ message: 'Terms and Conditions updated successfully' });
+            } else {
+                // Create a new entry
+                termsAndCondition = new TermsAndCondetion({ text });
+                await termsAndCondition.save();
+                res.status(200).send({ message: 'Terms and Conditions added successfully' });
+            }
+        } catch (error) {
+            res.status(500).send({ message: 'Error adding or updating Terms and Conditions', error });
+        }
     }
-}
 ];
+
 
 const updatetermsAndCondetion = [upload.none(), Middleware.verifyToken, [
     check('id').not().isEmpty().withMessage('id field is required'),

@@ -31,7 +31,7 @@ const jackpot = [
             const { first_place, second_place, third_place, fourth_place, fifth_place, sixth_to_tenth_place, eleventh_to_twenty_place, twenty_one_to_thirty_place, thirty_one_to_forty_place, forty_one_to_fifty_place, fifty_one_to_one_hundred_place, one_hundred_one_to_five_hundred_place, five_hundred_one_to_thousand_place, one_thousand_one_to_two_thousand_place, two_thousand_one_to_three_thousand_place, three_thousand_one_to_four_thousand_place, four_thousand_one_to_five_thousand_place } = req.body;
             const jackpotWinStratgy = new JackpotWinningStracture({ first_place, second_place, third_place, fourth_place, fifth_place, sixth_to_tenth_place, eleventh_to_twenty_place, twenty_one_to_thirty_place, thirty_one_to_forty_place, forty_one_to_fifty_place, fifty_one_to_one_hundred_place, one_hundred_one_to_five_hundred_place, five_hundred_one_to_thousand_place, one_thousand_one_to_two_thousand_place, two_thousand_one_to_three_thousand_place, three_thousand_one_to_four_thousand_place, four_thousand_one_to_five_thousand_place,user_id:id._id })
              await jackpotWinStratgy.save();
-            res.status(201).send({ message: 'Jackpot added successfully' });
+            res.status(200).send({ message: 'Jackpot added successfully' });
         } catch (error) {
             res.status(400).send({ message: 'Error adding jackpot', error });
         }
