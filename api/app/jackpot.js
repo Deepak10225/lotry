@@ -30,6 +30,7 @@ const jackpotHome = [Middleware.verifyToken, async (req, res) => {
                 name: name,
                 prize_pool: prize_pool,
                 join_count: join_count,
+                date: starting_date,
                 total_wining_amount: wining_amount,
                 buy_jackpot: prize,
                 image: `${baseUrl}/uploads/images/${profileImagePath}`,
