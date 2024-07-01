@@ -80,5 +80,9 @@ exports.addBankValidation = [
     check('bank_name').not().isEmpty().withMessage('bank name field is required'),
     check('bank_branch').not().isEmpty().withMessage('bank branch field is required'),
 ]
+exports.notificationValidition = [
+    check('title').not().isEmpty().withMessage('title field is required'),
+    check('description').not().isEmpty().withMessage('description field is required'),
+]
 
 

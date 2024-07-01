@@ -356,19 +356,19 @@ const getTermsAndCondetion = [Middleware.verifyToken, async (req, res) => {
 
 module.exports =
 {
-    banner,
-    deleteBanner,
-    helpAndSupport,
-    updateHelpAndSupport,
-    aboutUs,
-    updateAboutUs,
-    refundPolicy,
-    updateRefundPolicy,
-    termsAndCondetion,
-    updatetermsAndCondetion,
-    getBanner,
-    helpAndSuport,
-    getAboutUs,
-    getRefundPolicy,
-    getTermsAndCondetion
+banner,
+deleteBanner,
+helpAndSupport,
+updateHelpAndSupport,
+aboutUs,
+updateAboutUs,
+refundPolicy,
+updateRefundPolicy,
+termsAndCondetion,
+updatetermsAndCondetion,
+getBanner,
+helpAndSuport,
+getAboutUs,
+getRefundPolicy,
+getTermsAndCondetion
 };

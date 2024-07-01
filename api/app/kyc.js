@@ -16,6 +16,10 @@ const kycVerification = [upload.none(), Middleware.verifyToken, updateKycValidat
         const {name,aadhar_no,pan_no,dob} = req.body;
         const user_id = req.user;
         const status = 0;
+        const matchKYC = KYC.find({user_id});
+        if (matchKYC) {
+        res.status(200).json({'message':'KYC details already uploaded'});
+        }
         const kyc = new KYC({name,aadhar_no,pan_no,dob,user_id,status});
         await kyc.save();
         res.status(200).json({'message':'KYC details submitted successfully'});
@@ -42,7 +46,10 @@ const uploadKyc = [upload.fields([{ name: 'pan_img', maxCount: 1 },{ name: 'aadh
             const pan_img = req.files.pan_img[0].filename;
             const aadhar_img = req.files.aadhar_img[0].filename;
             const user_id = req.user;
-
+            const matchKYC = KYC.find({user_id});
+        if (matchKYC) {
+        res.status(200).json({'message':'KYC details already uploaded'});
+        }
             const kyc = new KYCDocument({ aadhar_img, pan_img, user_id });
             await kyc.save();
 

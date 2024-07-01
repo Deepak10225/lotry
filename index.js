@@ -14,6 +14,7 @@ const {getUser,addUser} = require('./api/admin/userApi');
 const dashboard = require('./api/admin/dashboard');
 const {jackpot,getJackpots,deleteJackpots} = require('./api/admin/jackpot');
 const {getKYC,deleteKYC,changeKycStatus} = require('./api/admin/kyc');
+const {notification,getNotification} = require('./api/admin/notification');
 const {banner,deleteBanner,helpAndSupport,updateHelpAndSupport,aboutUs,updateAboutUs,refundPolicy,updateRefundPolicy, termsAndCondetion, updatetermsAndCondetion,getBanner,helpAndSuport,getAboutUs,getRefundPolicy,getTermsAndCondetion} = require('./api/admin/setting');
 
 const {checkNumber,verifyOTP,signup} = require('./api/app/user');
@@ -52,6 +53,8 @@ app.post('/api/update-refund-policy',updateRefundPolicy);
 app.post('/api/terms-and-condetion',termsAndCondetion);
 app.post('/api/update-terms-and-condetion',updatetermsAndCondetion);
 app.get('/api/terms-and-conditions',getTermsAndCondetion);
+app.post('/api/notification',notification);
+app.get('/api/get-notification',getNotification);
 
 //  KYC 
 app.get('/api/kyc-details',getKYC);
