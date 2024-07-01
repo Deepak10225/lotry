@@ -26,21 +26,42 @@ const getNotification = [upload.none(), Middleware.verifyToken, async (req, res)
     try {
         const notification = await Notification.find();
         const modifiedJackpot = notification.map(data => {
-            const { _id, title,description, ...rest } = data.toJSON();
+            const { _id, title, description, ...rest } = data.toJSON();
             return {
                 id: _id,
-                title:title,
-                description:description,
+                title: title,
+                description: description,
             };
         });
         res.status(200).send({ notifications: modifiedJackpot });
     } catch (error) {
-        res.status(500).send({ message: 'Error fetching help and support', error });
+        res.status(500).send({ message: 'Error fetching notification', error });
     }
 }
 ];
 
+const deleteNotification = [
+    upload.none(), 
+    Middleware.verifyToken, 
+    async (req, res) => {
+        try {
+            const { id } = req.query; // Extract id from req.query
+            const notification = await Notification.findByIdAndDelete(id); // Await the deletion operation
+
+            if (notification) {
+                return res.status(200).send({ message: 'Notification deleted successfully' });
+            } else {
+                return res.status(404).send({ message: 'Notification record not found' });
+            }
+        } catch (error) {
+            return res.status(500).send({ message: 'Error deleting notification', error });
+        }
+    }
+];
+
+
 module.exports = {
     notification,
-    getNotification
+    getNotification,
+    deleteNotification
 }
