@@ -3,6 +3,8 @@ const { check, validationResult } = require('express-validator');
 const User = require('../../models/User'); // Adjust the path to your User model
 const Middleware = require('../../middleware/jwt'); // Adjust the path to your Middleware
 const upload = require('../../upload-file/file-upload'); // Adjust the path to your upload configuration
+const { formatValidationErrors } = require('./validation-response/apiResponse');
+const {updateProfileValidation} = require('../../helper/validation');
 
 const addUser = [
     upload.single('profile'),
@@ -48,8 +50,52 @@ const getUser = [
         }
     }
 ];
+const deleteUser = [Middleware.verifyToken,async (req, res) => {
+    try {
+      const { id } = req.query;
+      const user = await User.findByIdAndDelete(id);
+      if (!user) {
+        return res.status(404).send({ message: 'user record not found' });
+      }
+
+      res.status(200).send({ message: 'user  deleted successfully' });
+    } catch (error) {
+      res.status(500).send({ message: 'Error deleting user ', error });
+    }
+  }
+];
+const updateUser = [Middleware.verifyToken,upload.single('profile'),updateProfileValidation,async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const formattedErrors = formatValidationErrors(errors);
+            return res.status(422).json({ errors: formattedErrors });
+        }
+        const userId = req.user;
+        const { name } = req.body;
+        let updateData = { name };
+
+        if (req.file) {
+            const profileImagePath = req.file.filename;
+            updateData.profile = profileImagePath;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId,updateData,{ new: true });
+
+        if (!updatedUser) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        res.status(200).send({'message':'profile update successfully'});
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating user profile', error });
+    }
+}
+];
 
 module.exports = {
     getUser,
-    addUser
+    addUser,
+    deleteUser,
+    updateUser
 }

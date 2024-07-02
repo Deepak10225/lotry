@@ -10,7 +10,7 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 const loginApi = require('./api/admin/loginApi');
-const {getUser,addUser} = require('./api/admin/userApi');
+const {getUser,addUser,deleteUser,updateUser} = require('./api/admin/userApi');
 const dashboard = require('./api/admin/dashboard');
 const {jackpot,getJackpots,deleteJackpots} = require('./api/admin/jackpot');
 const {getKYC,deleteKYC,changeKycStatus} = require('./api/admin/kyc');
@@ -28,6 +28,8 @@ app.post('/api/login',loginApi);
 // Users Api
 app.post('/api/add-user',addUser);
 app.get('/api/get-user',getUser);
+app.get('/api/delete-user',deleteUser);
+app.post('/api/update-user',updateUser);
 
 // Dashboard
 app.get('/api/dashboards',dashboard);
