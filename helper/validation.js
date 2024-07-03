@@ -59,6 +59,7 @@ exports.signupValidation = [
 
 exports.updateProfileValidation = [
     check('name').not().isEmpty().withMessage('name field is required'),
+    check('id').not().isEmpty().withMessage('id field is required'),
 
 ];
 

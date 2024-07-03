@@ -71,8 +71,7 @@ const updateUser = [Middleware.verifyToken,upload.single('profile'),updateProfil
             const formattedErrors = formatValidationErrors(errors);
             return res.status(422).json({ errors: formattedErrors });
         }
-        const userId = req.user;
-        const { name } = req.body;
+        const { name,id } = req.body;
         let updateData = { name };
 
         if (req.file) {
@@ -80,7 +79,7 @@ const updateUser = [Middleware.verifyToken,upload.single('profile'),updateProfil
             updateData.profile = profileImagePath;
         }
 
-        const updatedUser = await User.findByIdAndUpdate(userId,updateData,{ new: true });
+        const updatedUser = await User.findByIdAndUpdate(id,updateData,{ new: true });
 
         if (!updatedUser) {
             return res.status(404).send({ message: 'User not found' });
@@ -93,9 +92,39 @@ const updateUser = [Middleware.verifyToken,upload.single('profile'),updateProfil
 }
 ];
 
+const userDetails = [ Middleware.verifyToken,async(req,res)=>{
+    try {
+        const { id } = req.query;
+
+        if (!id) {
+            return res.status(400).json({ errors: { id: 'id feild is required' } });
+            
+        }
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        const user = await User.findOne({ _id: id });
+
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+    
+        const modifiedHelpAndSupport = {
+            id: user._id,
+            name: user.name,
+            number: user.number,
+            profile: `${baseUrl}/uploads/images/${user.profile}`,
+        };
+    
+        res.status(200).send({ user: modifiedHelpAndSupport });
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching help and support', error });
+    }
+}
+]
+
 module.exports = {
     getUser,
     addUser,
     deleteUser,
-    updateUser
+    updateUser,
+    userDetails
 }
